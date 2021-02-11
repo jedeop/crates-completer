@@ -16,7 +16,32 @@ interface CrateVersion {
   yanked: boolean,
 }
 
-class CratesIoCompletionItemProvider implements vscode.CompletionItemProvider {
+class CrateNameCompletionItemProvider implements vscode.CompletionItemProvider {
+  public async provideCompletionItems(
+    document: vscode.TextDocument,
+    position: vscode.Position,
+  ): Promise<vscode.CompletionList> {
+    const range = new vscode.Range(position.line, 0, position.line, position.character);
+    const text = document.getText(range);
+
+    if (!text.includes('=')) {
+      const res = await fetch(`${CRATES_IO_SEARCH_URL}${text}`);
+      const { crates }: { crates: Crate[] } = await res.json();
+
+      const items = crates.map(crate => {
+        const item = new vscode.CompletionItem(crate.name, vscode.CompletionItemKind.Property);
+        item.insertText = new vscode.SnippetString(`${crate.name} = "\${0:${crate.max_stable_version}}"`);
+        return item;
+      });
+
+      return new vscode.CompletionList(items, true);
+    } else {
+      return new vscode.CompletionList();
+    }
+
+  }
+}
+class CrateVersionCompletionItemProvider implements vscode.CompletionItemProvider {
   public async provideCompletionItems(
     document: vscode.TextDocument,
     position: vscode.Position,
@@ -44,26 +69,19 @@ class CratesIoCompletionItemProvider implements vscode.CompletionItemProvider {
 
       return new vscode.CompletionList(items, false);
     } else {
-      const res = await fetch(`${CRATES_IO_SEARCH_URL}${text}`);
-      const { crates }: { crates: Crate[] } = await res.json();
-
-      const items = crates.map(crate => {
-        const item = new vscode.CompletionItem(crate.name, vscode.CompletionItemKind.Property);
-        item.insertText = new vscode.SnippetString(`${crate.name} = "\${0:${crate.max_stable_version}}"`);
-        item.documentation = new vscode.MarkdownString(`${crate.description}  \n[See on crates.io](https://crates.io/crates/${crate.name})`);
-        return item;
-      });
-
-      return new vscode.CompletionList(items, true);
+      return new vscode.CompletionList();
     }
-
   }
 }
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
     { language: 'toml', pattern: '**/Cargo.toml' },
-    new CratesIoCompletionItemProvider(),
+    new CrateNameCompletionItemProvider(),
+  ));
+  context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
+    { language: 'toml', pattern: '**/Cargo.toml' },
+    new CrateVersionCompletionItemProvider(),
   ));
 }
 
