@@ -2,6 +2,7 @@
   "name": "crates-completer",
   "displayName": "Crates Completer",
   "description": "VS Code extension for auto complete dependencies in Cargo.toml",
+  "logo": "images/logo.png",
   "keywords": [
     "rust",
     "cargo",
@@ -66,5 +67,5 @@
     "lodash": "^4.17.20",
     "node-fetch": "^2.6.1"
   },
-  "license": "MIT"
+  "license": "SEE LICENSE IN LICENSE"
 }

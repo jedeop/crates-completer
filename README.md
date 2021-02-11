@@ -1,6 +1,7 @@
 # Crates Completer
 
-IntelliSense for crates in dependencies table in `Cargo.toml`
+IntelliSense for crates in dependencies table in `Cargo.toml`.  
+It works with `crates.io` API.
 
 ## Features
 
@@ -9,6 +10,10 @@ IntelliSense for crates in dependencies table in `Cargo.toml`
 - suggest crate version
 
 ## Release Notes
+
+### 1.0.1
+
+Add logo and preview
 
 ### 1.0.0
 
