@@ -1,6 +1,6 @@
 {
-  "name": "crates-finder",
-  "displayName": "Crates Finder",
+  "name": "crates-completer",
+  "displayName": "Crates Completer",
   "description": "VS Code extension for auto complete dependencies in Cargo.toml",
   "keywords": [
     "rust",
@@ -20,13 +20,13 @@
     "name": "jedeop",
     "email": "me@jedeop.dev"
   },
-  "homepage": "https://github.com/jedeop/crates-finder",
+  "homepage": "https://github.com/jedeop/crates-completer",
   "bugs": {
-    "url": "https://github.com/jedeop/crates-finder/issues"
+    "url": "https://github.com/jedeop/crates-completer/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jedeop/crates-finder.git"
+    "url": "https://github.com/jedeop/crates-completer.git"
   },
   "activationEvents": [
     "workspaceContains:Cargo.toml"

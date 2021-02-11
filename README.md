@@ -1,4 +1,4 @@
-# Crates Finder README
+# Crates Completer
 
 IntelliSense for crates in dependencies table in `Cargo.toml`
 
