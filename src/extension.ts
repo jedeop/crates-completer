@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import fetch from 'node-fetch';
 import { groupBy as _groupBy } from 'lodash';
 
-const CRATES_IO_SEARCH_URL = 'https://crates.io/api/v1/crates?page=1&per_page=5&q=';
+const CRATES_IO_SEARCH_URL = 'https://crates.io/api/v1/crates?page=1&per_page=10&q=';
 const CRATES_IO_VERSION_URL = (crate: string) => `https://crates.io/api/v1/crates/${crate}/versions`;
 
 interface Crate {
@@ -16,13 +16,35 @@ interface CrateVersion {
   yanked: boolean,
 }
 
+function isInDependencies(document: vscode.TextDocument, cursorLine: number): boolean {
+    let regex = /\[(.+)\]/ig;
+    let line = cursorLine - 1;
+    let isInDependencies = false;
+    while (line > 0) {
+      let attr = regex.exec(document.lineAt(line).text);
+      if (attr) {
+        isInDependencies = attr[1] === 'dependencies';
+        break;
+      }
+      line--;
+    }
+    return isInDependencies;
+}
+function getTextBeforeCursor(document: vscode.TextDocument, position: vscode.Position): string {
+  const range = new vscode.Range(position.line, 0, position.line, position.character);
+  return document.getText(range);
+}
+
 class CrateNameCompletionItemProvider implements vscode.CompletionItemProvider {
   public async provideCompletionItems(
     document: vscode.TextDocument,
     position: vscode.Position,
   ): Promise<vscode.CompletionList> {
-    const range = new vscode.Range(position.line, 0, position.line, position.character);
-    const text = document.getText(range);
+    if (!isInDependencies(document, position.line)) {
+      return new vscode.CompletionList();
+    }
+
+    const text = getTextBeforeCursor(document, position);
 
     if (!text.includes('=')) {
       const res = await fetch(`${CRATES_IO_SEARCH_URL}${text}`);
@@ -46,8 +68,11 @@ class CrateVersionCompletionItemProvider implements vscode.CompletionItemProvide
     document: vscode.TextDocument,
     position: vscode.Position,
   ): Promise<vscode.CompletionList> {
-    const range = new vscode.Range(position.line, 0, position.line, position.character);
-    const text = document.getText(range);
+    if (!isInDependencies(document, position.line)) {
+      return new vscode.CompletionList();
+    }
+
+    const text = getTextBeforeCursor(document, position);
 
     const regex = /\s*(.+?)\s*=\s*"/;
 
