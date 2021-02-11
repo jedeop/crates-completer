@@ -26,7 +26,10 @@ class CratesIoCompletionItemProvider implements vscode.CompletionItemProvider {
 
     const regex = /\s*(.+?)\s*=\s*"/;
 
-    if (regex.test(text)) {
+    if (text.includes('=')) {
+      if (!regex.test(text)) {
+        return new vscode.CompletionList();
+      }
       const crate = (regex.exec(text) as RegExpExecArray)[1];
 
       const res = await fetch(CRATES_IO_VERSION_URL(crate));
@@ -38,6 +41,7 @@ class CratesIoCompletionItemProvider implements vscode.CompletionItemProvider {
         item.sortText = `${i}`;
         return item;
       });
+
       return new vscode.CompletionList(items, false);
     } else {
       const res = await fetch(`${CRATES_IO_SEARCH_URL}${text}`);
@@ -50,11 +54,9 @@ class CratesIoCompletionItemProvider implements vscode.CompletionItemProvider {
         return item;
       });
 
-      
-
       return new vscode.CompletionList(items, true);
     }
-    
+
   }
 }
 
