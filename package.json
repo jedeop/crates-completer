@@ -1,26 +1,46 @@
 {
   "name": "crates-finder",
   "displayName": "Crates Finder",
-  "description": "",
-  "version": "0.0.1",
+  "description": "VS Code extension for auto complete dependencies in Cargo.toml",
+  "keywords": [
+    "rust",
+    "cargo",
+    "crate",
+    "crates.io"
+  ],
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.53.0"
   },
   "categories": [
     "Other"
   ],
+  "publisher": "jedeop",
+  "author": {
+    "name": "jedeop",
+    "email": "me@jedeop.dev"
+  },
+  "homepage": "https://github.com/jedeop/crates-finder",
+  "bugs": {
+    "url": "https://github.com/jedeop/crates-finder/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jedeop/crates-finder.git"
+  },
   "activationEvents": [
     "workspaceContains:Cargo.toml"
   ],
   "main": "./out/extension.js",
-  "contributes": {
-    "commands": []
-  },
+  "contributes": {},
   "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "test-compile": "tsc -p ./",
+    "test-watch": "tsc -watch -p ./",
+    "pretest": "npm run test-compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js"
   },
@@ -36,8 +56,11 @@
     "eslint": "^7.19.0",
     "glob": "^7.1.6",
     "mocha": "^8.2.1",
+    "ts-loader": "^8.0.17",
     "typescript": "^4.1.3",
-    "vscode-test": "^1.5.0"
+    "vscode-test": "^1.5.0",
+    "webpack": "^5.21.2",
+    "webpack-cli": "^4.5.0"
   },
   "dependencies": {
     "lodash": "^4.17.20",
