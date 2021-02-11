@@ -1,6 +1,6 @@
-# crates-io README
+# Crates Finder README
 
-This is the README for your extension "crates-io". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "Crates Finder". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 

@@ -1,6 +1,6 @@
 {
-  "name": "crates-io",
-  "displayName": "crates.io",
+  "name": "crates-finder",
+  "displayName": "Crates Finder",
   "description": "",
   "version": "0.0.1",
   "engines": {

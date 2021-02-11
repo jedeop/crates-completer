@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import fetch from 'node-fetch';
-import { groupBy as _groupBy, max, values } from 'lodash';
+import { groupBy as _groupBy } from 'lodash';
 
 const CRATES_IO_SEARCH_URL = 'https://crates.io/api/v1/crates?page=1&per_page=5&q=';
 const CRATES_IO_VERSION_URL = (crate: string) => `https://crates.io/api/v1/crates/${crate}/versions`;
@@ -61,8 +61,6 @@ class CratesIoCompletionItemProvider implements vscode.CompletionItemProvider {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log('Congratulations, your extension "crates-io" is now active!');
-
   context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
     { language: 'toml', pattern: '**/Cargo.toml' },
     new CratesIoCompletionItemProvider(),
