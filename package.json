@@ -9,7 +9,7 @@
     "crate",
     "crates.io"
   ],
-  "version": "1.0.2",
+  "version": "1.0.3",
   "engines": {
     "vscode": "^1.53.0"
   },
