@@ -53,7 +53,7 @@ class CrateNameCompletionItemProvider implements vscode.CompletionItemProvider {
 
       const items = crates.map(crate => {
         const item = new vscode.CompletionItem(crate.name, vscode.CompletionItemKind.Property);
-        item.insertText = new vscode.SnippetString(`${crate.name} = "\${0:${crate.max_stable_version}}"`);
+        item.insertText = new vscode.SnippetString(`${crate.name} = "\${1:${crate.max_stable_version}}"`);
         return item;
       });
 
@@ -86,12 +86,19 @@ class CrateVersionCompletionItemProvider implements vscode.CompletionItemProvide
       const res = await fetch(CRATES_IO_VERSION_URL(crate));
       const { versions }: { versions: CrateVersion[] } = await res.json();
 
-      const items = versions.filter(version => !version.yanked).map(({ num: version }, i) => {
-        const item = new vscode.CompletionItem(version, vscode.CompletionItemKind.Constant);
-        item.insertText = new vscode.SnippetString(`${version}`);
-        item.sortText = `${i}`;
-        return item;
-      });
+      const items = versions
+        .filter(version => !version.yanked)
+        .map(version => version.num)
+        .map((version, i) => {
+          const item = new vscode.CompletionItem(version, vscode.CompletionItemKind.Constant);
+          item.insertText = new vscode.SnippetString(`${version}`);
+          item.sortText = i.toLocaleString('en-US', {
+            minimumIntegerDigits: 10,
+            useGrouping: false,
+          });
+          console.log(item.sortText);
+          return item;
+        });
 
       return new vscode.CompletionList(items, false);
     } else {

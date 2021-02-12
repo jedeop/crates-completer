@@ -36,6 +36,9 @@ const config = {
         ]
       }
     ]
-  }
+  },
+  infrastructureLogging: {
+    level: 'log',
+  },
 };
 module.exports = config;
