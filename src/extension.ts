@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import fetch from 'node-fetch';
 import { groupBy as _groupBy } from 'lodash';
 
+const CARGO_MODE: vscode.DocumentSelector = { language: 'toml', pattern: '**/Cargo.toml' };
 const CRATES_IO_SEARCH_URL = 'https://crates.io/api/v1/crates?page=1&per_page=10&q=';
 const CRATES_IO_VERSION_URL = (crate: string) => `https://crates.io/api/v1/crates/${crate}/versions`;
 
@@ -101,11 +102,11 @@ class CrateVersionCompletionItemProvider implements vscode.CompletionItemProvide
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
-    { language: 'toml', pattern: '**/Cargo.toml' },
+    CARGO_MODE,
     new CrateNameCompletionItemProvider(),
   ));
   context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
-    { language: 'toml', pattern: '**/Cargo.toml' },
+    CARGO_MODE,
     new CrateVersionCompletionItemProvider(),
   ));
 }
