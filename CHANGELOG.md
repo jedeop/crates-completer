@@ -1,7 +1,8 @@
 # Change Log
 
 ## [Unreleased]
-
+### Add
+- auto completion works in all kind of `dependencies` table
 
 ## [1.1.0] - 2021-02-12
 

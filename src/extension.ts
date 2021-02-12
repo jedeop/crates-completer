@@ -24,7 +24,7 @@ function isInDependencies(document: vscode.TextDocument, cursorLine: number): bo
     while (line > 0) {
       let attr = regex.exec(document.lineAt(line).text);
       if (attr) {
-        isInDependencies = attr[1] === 'dependencies' || attr[1] === 'dev-dependencies';
+        isInDependencies = attr[1].includes('dependencies');
         break;
       }
       line--;
