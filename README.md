@@ -9,6 +9,9 @@ It works with `crates.io` API.
 - suggest crate name and auto complete with latest stable version
 - suggest crate version
 
+## Inspired by
+- [search-crates-io](https://github.com/belfz/search-crates-io) - Visual Studio Code extension for crates suggestions in Cargo.toml 
+
 ## Release Notes
 
 ### 1.0.1
