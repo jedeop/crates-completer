@@ -1,6 +1,6 @@
 # Crates Completer
 
-IntelliSense for crates in dependencies table in `Cargo.toml`.  
+Auto completion for crates in dependencies table in `Cargo.toml`.  
 It works with `crates.io` API.
 
 ## Features
@@ -14,9 +14,17 @@ It works with `crates.io` API.
 
 ## Release Notes
 
+### 1.1.0
+
+#### Add
+- auto completion also works in `dev-dependencies` table
+#### Fixed
+- version suggestion order is incorrect
+
 ### 1.0.1
 
-Add logo and preview
+#### Add
+- logo and preview image
 
 ### 1.0.0
 
