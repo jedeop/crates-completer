@@ -4,6 +4,7 @@
 ### Add
 - auto completion in all kind of `dependencies` table
 - version auto completion in inline table (eg. `crate = { version = "" }`)
+- add detail/documentation to completion item
 
 ## [1.1.0] - 2021-02-12
 

@@ -4,7 +4,7 @@ import { groupBy as _groupBy } from 'lodash';
 
 const CARGO_MODE: vscode.DocumentSelector = { language: 'toml', pattern: '**/Cargo.toml' };
 const CRATES_IO_SEARCH_URL = 'https://crates.io/api/v1/crates?page=1&per_page=10&q=';
-const CRATES_IO_VERSION_URL = (crate: string) => `https://crates.io/api/v1/crates/${crate}/versions`;
+const CRATES_IO_CRATE_URL = (crate: string) => `https://crates.io/api/v1/crates/${crate}`;
 
 interface Crate {
   name: string,
@@ -57,6 +57,8 @@ class CrateNameCompletionItemProvider implements vscode.CompletionItemProvider {
     const items = crates.map(crate => {
       const item = new vscode.CompletionItem(crate.name, vscode.CompletionItemKind.Property);
       item.insertText = new vscode.SnippetString(`${crate.name} = "\${1:${crate.max_stable_version}}"`);
+      item.detail = `latest: ${crate.max_stable_version}`;
+      item.documentation = `${crate.description}`;
       return item;
     });
 
@@ -85,8 +87,8 @@ class CrateVersionCompletionItemProvider implements vscode.CompletionItemProvide
 
     const crate = (getCrate.exec(text) as RegExpExecArray)[1];
 
-    const res = await fetch(CRATES_IO_VERSION_URL(crate));
-    const { versions }: { versions: CrateVersion[] } = await res.json();
+    const res = await fetch(CRATES_IO_CRATE_URL(crate));
+    const { crate: crateMeta, versions }: { crate: Crate, versions: CrateVersion[] } = await res.json();
 
     const items = versions
       .filter(version => !version.yanked)
@@ -98,7 +100,10 @@ class CrateVersionCompletionItemProvider implements vscode.CompletionItemProvide
           minimumIntegerDigits: 10,
           useGrouping: false,
         });
-        console.log(item.sortText);
+        if (version === crateMeta.max_stable_version) {
+          item.detail = `latest`;
+          item.preselect = true;
+        }
         return item;
       });
 
