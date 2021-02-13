@@ -14,6 +14,13 @@ It works with `crates.io` API.
 
 ## Release Notes
 
+### 1.2.0
+
+#### Add
+- auto completion in all kind of `dependencies` table
+- version auto completion in inline table (eg. `crate = { version = "" }`)
+- add detail/documentation to completion item
+
 ### 1.1.0
 
 #### Add

@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+
+## [1.2.0] - 2021-02-13
+
 ### Add
 - auto completion in all kind of `dependencies` table
 - version auto completion in inline table (eg. `crate = { version = "" }`)
