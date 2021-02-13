@@ -18,6 +18,7 @@ It works with `crates.io` API.
 
 #### Add
 - auto completion also works in `dev-dependencies` table
+
 #### Fixed
 - version suggestion order is incorrect
 

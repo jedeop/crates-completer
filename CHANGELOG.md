@@ -2,12 +2,14 @@
 
 ## [Unreleased]
 ### Add
-- auto completion works in all kind of `dependencies` table
+- auto completion in all kind of `dependencies` table
+- version auto completion in inline table (eg. `crate = { version = "" }`)
 
 ## [1.1.0] - 2021-02-12
 
 ### Add
 - auto completion also works in `dev-dependencies` table
+
 ### Fixed
 - version suggestion order is incorrect
 

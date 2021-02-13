@@ -47,21 +47,20 @@ class CrateNameCompletionItemProvider implements vscode.CompletionItemProvider {
 
     const text = getTextBeforeCursor(document, position);
 
-    if (!text.includes('=')) {
-      const res = await fetch(`${CRATES_IO_SEARCH_URL}${text}`);
-      const { crates }: { crates: Crate[] } = await res.json();
-
-      const items = crates.map(crate => {
-        const item = new vscode.CompletionItem(crate.name, vscode.CompletionItemKind.Property);
-        item.insertText = new vscode.SnippetString(`${crate.name} = "\${1:${crate.max_stable_version}}"`);
-        return item;
-      });
-
-      return new vscode.CompletionList(items, true);
-    } else {
+    if (text.includes('=')) {
       return new vscode.CompletionList();
     }
 
+    const res = await fetch(`${CRATES_IO_SEARCH_URL}${text}`);
+    const { crates }: { crates: Crate[] } = await res.json();
+
+    const items = crates.map(crate => {
+      const item = new vscode.CompletionItem(crate.name, vscode.CompletionItemKind.Property);
+      item.insertText = new vscode.SnippetString(`${crate.name} = "\${1:${crate.max_stable_version}}"`);
+      return item;
+    });
+
+    return new vscode.CompletionList(items, true);
   }
 }
 class CrateVersionCompletionItemProvider implements vscode.CompletionItemProvider {
@@ -75,35 +74,35 @@ class CrateVersionCompletionItemProvider implements vscode.CompletionItemProvide
 
     const text = getTextBeforeCursor(document, position);
 
-    const regex = /\s*(.+?)\s*=\s*"/;
+    const getCrate = /^\s*([\w-]+?)\s*=/;
+    const isSimple = /^\s*([\w-]+?)\s*=\s*"[^"]*$/;
+    const isInlineTable = /version\s*=\s*"[^"]*$/;
 
-    if (text.includes('=')) {
-      if (!regex.test(text)) {
-        return new vscode.CompletionList();
-      }
-      const crate = (regex.exec(text) as RegExpExecArray)[1];
-
-      const res = await fetch(CRATES_IO_VERSION_URL(crate));
-      const { versions }: { versions: CrateVersion[] } = await res.json();
-
-      const items = versions
-        .filter(version => !version.yanked)
-        .map(version => version.num)
-        .map((version, i) => {
-          const item = new vscode.CompletionItem(version, vscode.CompletionItemKind.Constant);
-          item.insertText = new vscode.SnippetString(`${version}`);
-          item.sortText = i.toLocaleString('en-US', {
-            minimumIntegerDigits: 10,
-            useGrouping: false,
-          });
-          console.log(item.sortText);
-          return item;
-        });
-
-      return new vscode.CompletionList(items, false);
-    } else {
+    if (!(getCrate.test(text) && (isSimple.test(text) || isInlineTable.test(text)))) {
       return new vscode.CompletionList();
     }
+
+
+    const crate = (getCrate.exec(text) as RegExpExecArray)[1];
+
+    const res = await fetch(CRATES_IO_VERSION_URL(crate));
+    const { versions }: { versions: CrateVersion[] } = await res.json();
+
+    const items = versions
+      .filter(version => !version.yanked)
+      .map(version => version.num)
+      .map((version, i) => {
+        const item = new vscode.CompletionItem(version, vscode.CompletionItemKind.Constant);
+        item.insertText = new vscode.SnippetString(`${version}`);
+        item.sortText = i.toLocaleString('en-US', {
+          minimumIntegerDigits: 10,
+          useGrouping: false,
+        });
+        console.log(item.sortText);
+        return item;
+      });
+
+    return new vscode.CompletionList(items, false);
   }
 }
 
