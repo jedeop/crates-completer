@@ -1,7 +1,7 @@
 {
   "name": "crates-completer",
   "displayName": "Crates Completer",
-  "description": "VS Code extension for auto complete dependencies in Cargo.toml",
+  "description": "Auto complete crate's name and version in Cargo.toml",
   "icon": "images/logo.png",
   "keywords": [
     "rust",
