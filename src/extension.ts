@@ -18,7 +18,7 @@ interface CrateVersion {
 }
 
 function isInDependencies(document: vscode.TextDocument, cursorLine: number): boolean {
-    let regex = /\[(.+)\]/ig;
+    let regex = /^\s*\[(.+)\]/ig;
     let line = cursorLine - 1;
     let isInDependencies = false;
     while (line > 0) {

@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [1.2.1] - 2021-02-13
+### Fixed
+- extension is not activated when `Cargo.toml` is in subdir
+- auto completion not work after array in inline table
+
 ## [1.2.0] - 2021-02-13
 
 ### Add

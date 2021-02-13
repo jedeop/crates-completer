@@ -30,7 +30,7 @@
     "url": "https://github.com/jedeop/crates-completer.git"
   },
   "activationEvents": [
-    "workspaceContains:Cargo.toml"
+    "workspaceContains:**/Cargo.toml"
   ],
   "main": "./dist/extension.js",
   "contributes": {},

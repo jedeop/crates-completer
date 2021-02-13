@@ -14,6 +14,12 @@ It works with `crates.io` API.
 
 ## Release Notes
 
+### 1.2.1
+
+#### Fixed
+- extension is not activated when `Cargo.toml` is in subdir
+- auto completion not work after array in inline table
+
 ### 1.2.0
 
 #### Add
